@@ -26,21 +26,44 @@ Task list file reference: $ARGUMENTS (e.g., `tasks/tasks-prd-user-profile-editin
    - List every file created or modified.
    - Give each file a one‑line description of its purpose.
 
+## Execution Mode Selection
+
+Before beginning task implementation, ask the user to choose their preferred execution mode:
+
+**"Would you like to use parallel sub-agent execution for independent tasks? This can be faster but uses more tokens. (yes for parallel, no for sequential)"**
+
+- **Parallel Mode (yes):** Launch multiple sub-agents to work on independent tasks simultaneously
+  - Faster completion for tasks without dependencies
+  - Higher token usage due to multiple concurrent agents
+  - All dependency rules are strictly enforced
+  - Only tasks with satisfied dependencies can run in parallel
+  
+- **Sequential Mode (no):** Process tasks one at a time in order
+  - Lower token usage
+  - Easier to follow progress
+  - Traditional one-by-one execution
+
 ## Process
 
 1. **Read Task List:** Load and analyze the specified task list file
-2. **Identify Next Task:** Find the first incomplete sub-task (marked with `[ ]`) that has all its dependencies satisfied
+2. **Ask Execution Mode:** Present the parallel vs sequential choice to the user
+3. **Identify Next Task(s):** 
+   - **Sequential Mode:** Find the first incomplete sub-task (marked with `[ ]`) that has all its dependencies satisfied
+   - **Parallel Mode:** Find ALL incomplete sub-tasks that have all their dependencies satisfied
    - Check for `[depends on: X.Y]` notation
    - Verify all referenced dependencies are marked `[x]`
    - Skip tasks with incomplete dependencies
-3. **Implement Task:** Work on the specific sub-task, following best practices:
-   - Understand existing codebase patterns before making changes
-   - Follow project conventions and coding standards
-   - Write tests when applicable
-   - Ensure code quality and security
-4. **Update Task List:** Mark the completed sub-task as `[x]` and update relevant files section
-5. **Request Permission:** Ask user for permission to continue to next sub-task
-6. **Repeat:** Continue with next sub-task only after user approval
+4. **Implement Task(s):** 
+   - **Sequential Mode:** Work on the specific sub-task
+   - **Parallel Mode:** Launch sub-agents for each independent task
+   - Follow best practices:
+     - Understand existing codebase patterns before making changes
+     - Follow project conventions and coding standards
+     - Write tests when applicable
+     - Ensure code quality and security
+5. **Update Task List:** Mark completed sub-task(s) as `[x]` and update relevant files section
+6. **Request Permission:** Ask user for permission to continue to next sub-task(s)
+7. **Repeat:** Continue with next batch of tasks only after user approval
 
 ## Important Guidelines
 
